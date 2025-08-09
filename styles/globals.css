@@ -368,4 +368,10 @@ body {
 
 .surface-container-high {
   background-color: rgb(var(--md-sys-color-surface-container-high));
-  color: rgb(var(--m
+  color: rgb(var(--md-sys-color-on-surface));
+}
+
+.surface-container-highest {
+  background-color: rgb(var(--md-sys-color-surface-container-highest));
+  color: rgb(var(--md-sys-color-on-surface));
+}
