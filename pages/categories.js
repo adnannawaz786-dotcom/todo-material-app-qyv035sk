@@ -16,7 +16,6 @@ export default function Categories() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
-  // Material Design 3 color palette
   const colorOptions = [
     '#6366f1', // Indigo
     '#8b5cf6', // Violet
@@ -28,13 +27,11 @@ export default function Categories() {
     '#84cc16', // Lime
   ];
 
-  // Load categories from localStorage on mount
   useEffect(() => {
     const savedCategories = localStorage.getItem('todo-categories');
     if (savedCategories) {
       setCategories(JSON.parse(savedCategories));
     } else {
-      // Initialize with default categories
       const defaultCategories = [
         { id: '1', name: 'Work', color: '#6366f1', todoCount: 0 },
         { id: '2', name: 'Personal', color: '#10b981', todoCount: 0 },
@@ -45,14 +42,12 @@ export default function Categories() {
     }
   }, []);
 
-  // Save categories to localStorage whenever categories change
   useEffect(() => {
     if (categories.length > 0) {
       localStorage.setItem('todo-categories', JSON.stringify(categories));
     }
   }, [categories]);
 
-  // Update todo counts from localStorage todos
   useEffect(() => {
     const updateTodoCounts = () => {
       const savedTodos = localStorage.getItem('todos');
@@ -69,7 +64,6 @@ export default function Categories() {
     };
 
     updateTodoCounts();
-    // Listen for storage changes to update counts when todos are modified
     window.addEventListener('storage', updateTodoCounts);
     return () => window.removeEventListener('storage', updateTodoCounts);
   }, [categories]);
@@ -91,24 +85,23 @@ export default function Categories() {
 
   const handleEditCategory = () => {
     if (editingCategory && newCategoryName.trim()) {
-      setCategories(prev => prev.map(cat => 
-        cat.id === editingCategory.id 
+      setCategories(prev => prev.map(cat =>
+        cat.id === editingCategory.id
           ? { ...cat, name: newCategoryName.trim(), color: newCategoryColor }
           : cat
       ));
-      
-      // Update todos with the new category name
+
       const savedTodos = localStorage.getItem('todos');
       if (savedTodos) {
         const todos = JSON.parse(savedTodos);
-        const updatedTodos = todos.map(todo => 
-          todo.category === editingCategory.name 
+        const updatedTodos = todos.map(todo =>
+          todo.category === editingCategory.name
             ? { ...todo, category: newCategoryName.trim() }
             : todo
         );
         localStorage.setItem('todos', JSON.stringify(updatedTodos));
       }
-      
+
       setEditingCategory(null);
       setNewCategoryName('');
       setNewCategoryColor('#6366f1');
@@ -119,19 +112,18 @@ export default function Categories() {
   const handleDeleteCategory = () => {
     if (categoryToDelete) {
       setCategories(prev => prev.filter(cat => cat.id !== categoryToDelete.id));
-      
-      // Remove category from todos or set them to 'Uncategorized'
+
       const savedTodos = localStorage.getItem('todos');
       if (savedTodos) {
         const todos = JSON.parse(savedTodos);
-        const updatedTodos = todos.map(todo => 
-          todo.category === categoryToDelete.name 
+        const updatedTodos = todos.map(todo =>
+          todo.category === categoryToDelete.name
             ? { ...todo, category: 'Uncategorized' }
             : todo
         );
         localStorage.setItem('todos', JSON.stringify(updatedTodos));
       }
-      
+
       setCategoryToDelete(null);
       setIsDeleteDialogOpen(false);
     }
@@ -207,9 +199,8 @@ export default function Categories() {
                       <button
                         key={color}
                         onClick={() => setNewCategoryColor(color)}
-                        className={`w-8 h-8 rounded-full border-2 ${
-                          newCategoryColor === color ? 'border-gray-800' : 'border-gray-300'
-                        } hover:scale-110 transition-transform`}
+                        className={`w-8 h-8 rounded-full border-2 ${newCategoryColor === color ? 'border-gray-800' : 'border-gray-300'
+                          } hover:scale-110 transition-transform`}
                         style={{ backgroundColor: color }}
                       />
                     ))}
@@ -279,10 +270,10 @@ export default function Categories() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between">
-                      <Badge 
-                        variant="secondary" 
+                      <Badge
+                        variant="secondary"
                         className="text-xs"
-                        style={{ 
+                        style={{
                           backgroundColor: `${category.color}15`,
                           color: category.color,
                           border: `1px solid ${category.color}30`
@@ -347,9 +338,8 @@ export default function Categories() {
                     <button
                       key={color}
                       onClick={() => setNewCategoryColor(color)}
-                      className={`w-8 h-8 rounded-full border-2 ${
-                        newCategoryColor === color ? 'border-gray-800' : 'border-gray-300'
-                      } hover:scale-110 transition-transform`}
+                      className={`w-8 h-8 rounded-full border-2 ${newCategoryColor === color ? 'border-gray-800' : 'border-gray-300'
+                        } hover:scale-110 transition-transform`}
                       style={{ backgroundColor: color }}
                     />
                   ))}
@@ -367,7 +357,6 @@ export default function Categories() {
           </DialogContent>
         </Dialog>
 
-        {/* Delete Category Dialog */}
         {/* Delete Category Dialog */}
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
           <DialogContent className="sm:max-w-md">
@@ -387,3 +376,7 @@ export default function Categories() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+    </div>
+  );
+}
